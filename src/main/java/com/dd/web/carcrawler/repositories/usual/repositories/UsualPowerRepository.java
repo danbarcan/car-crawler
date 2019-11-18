@@ -1,9 +1,9 @@
 package com.dd.web.carcrawler.repositories.usual.repositories;
 
-import com.dd.web.carcrawler.entities.usual.entities.FuelType;
+import com.dd.web.carcrawler.entities.usual.entities.UsualPower;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FuelTypeRepository extends JpaRepository<FuelType, Long> {
+public interface UsualPowerRepository extends JpaRepository<UsualPower, Long> {
 }

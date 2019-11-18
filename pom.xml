@@ -12,7 +12,7 @@
     <artifactId>car-crawler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>car-crawler</name>
-    <description>Crawler to save all existing car models</description>
+    <description>Crawler to save all existing car usualModels</description>
 
     <properties>
         <java.version>1.8</java.version>

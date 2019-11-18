@@ -1,12 +1,15 @@
 package com.dd.web.carcrawler.entities.usual.entities;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "Car_usual_manufacturers")
-public class Manufacturer {
+public class UsualManufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -14,14 +17,14 @@ public class Manufacturer {
     private String name;
 
     @OneToMany(
-            mappedBy = "manufacturer",
+            mappedBy = "usualManufacturer",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<Model> models;
+    private List<UsualModel> usualModels;
 
-    public Manufacturer(String name) {
+    public UsualManufacturer(String name) {
         this.name = name;
     }
 
@@ -33,26 +36,26 @@ public class Manufacturer {
         this.name = name;
     }
 
-    public List<Model> getModels() {
-        return models;
+    public List<UsualModel> getUsualModels() {
+        return usualModels;
     }
 
-    public void setModels(List<Model> models) {
-        this.models = models;
+    public void setUsualModels(List<UsualModel> usualModels) {
+        this.usualModels = usualModels;
     }
 
-    public void addModel(Model model){
-        if (this.models == null) {
-            this.models = new ArrayList<>();
+    public void addModel(UsualModel usualModel){
+        if (this.usualModels == null) {
+            this.usualModels = new ArrayList<>();
         }
-        this.models.add(model);
+        this.usualModels.add(usualModel);
     }
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
+        return "UsualManufacturer{" +
                 "name='" + name + '\'' +
-                ", models=" + models +
+                ", usualModels=" + usualModels +
                 '}';
     }
 }

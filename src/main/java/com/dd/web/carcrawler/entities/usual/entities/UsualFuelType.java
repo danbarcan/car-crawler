@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Car_usual_fuel_types")
-public class FuelType {
+public class UsualFuelType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -14,16 +14,16 @@ public class FuelType {
     private String name;
 
     @OneToMany(
-            mappedBy = "engineSize",
+            mappedBy = "usualFuelType",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<EngineSize> engineSizes;
+    private List<UsualEngineSize> usualEngineSizes;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
-    private Model model;
+    private UsualModel usualModel;
 
     public long getId() {
         return id;
@@ -33,7 +33,7 @@ public class FuelType {
         this.id = id;
     }
 
-    public FuelType(String name) {
+    public UsualFuelType(String name) {
         this.name = name;
     }
 
@@ -45,34 +45,34 @@ public class FuelType {
         this.name = name;
     }
 
-    public List<EngineSize> getEngineSizes() {
-        return engineSizes;
+    public List<UsualEngineSize> getUsualEngineSizes() {
+        return usualEngineSizes;
     }
 
-    public void setEngineSizes(List<EngineSize> engineSizes) {
-        this.engineSizes = engineSizes;
+    public void setUsualEngineSizes(List<UsualEngineSize> usualEngineSizes) {
+        this.usualEngineSizes = usualEngineSizes;
     }
 
     public void addYear(String year) {
-        if (this.engineSizes == null) {
-            this.engineSizes = new ArrayList<>();
+        if (this.usualEngineSizes == null) {
+            this.usualEngineSizes = new ArrayList<>();
         }
-        this.engineSizes.add(new EngineSize(year));
+        this.usualEngineSizes.add(new UsualEngineSize(year));
     }
 
-    public Model getModel() {
-        return model;
+    public UsualModel getUsualModel() {
+        return usualModel;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setUsualModel(UsualModel usualModel) {
+        this.usualModel = usualModel;
     }
 
     @Override
     public String toString() {
-        return "\n\t\tFuelType{" +
+        return "\n\t\tUsualFuelType{" +
                 "name='" + name + '\'' +
-                ", engineSizes=" + engineSizes +
+                ", usualEngineSizes=" + usualEngineSizes +
                 '}';
     }
 }

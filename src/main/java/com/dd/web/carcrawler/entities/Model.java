@@ -65,7 +65,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return "\n\tModel{" +
+        return "\n\tUsualModel{" +
                 "name='" + name + '\'' +
                 ", engineSizes=" + engineSizes +
                 '}';

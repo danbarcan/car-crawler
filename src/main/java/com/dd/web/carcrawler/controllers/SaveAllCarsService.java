@@ -74,7 +74,7 @@ public class SaveAllCarsService {
             Select selectModel = new Select(selectModelElement);
             List<Model> models = selectModel.getOptions()
                     .stream()
-                    .filter(model -> !model.getText().equalsIgnoreCase("Model"))
+                    .filter(model -> !model.getText().equalsIgnoreCase("UsualModel"))
                     .map(model -> new Model(model.getText()))
                     .collect(Collectors.toList());
             models.forEach(model -> {
@@ -121,15 +121,15 @@ public class SaveAllCarsService {
                             })
                             .collect(Collectors.toList());
 
-//                    engineSize.setFuelTypes(years);
-//                    engineSize.setFuelType(model);
+//                    engineSize.setUsualFuelTypes(years);
+//                    engineSize.setUsualFuelType(model);
 //                    engineSizeRepository.save(engineSize);
                 });
-//                model.setFuelTypes(engineSizes);
-//                model.setManufacturer(manufacturer);
+//                model.setUsualFuelTypes(engineSizes);
+//                model.setUsualManufacturer(manufacturer);
 //                modelRepository.save(model);
             });
-//            manufacturer.setModels(models);
+//            manufacturer.setUsualModels(models);
 //            manufacturerRepository.save(manufacturer);
             System.out.println(manufacturer);
         });

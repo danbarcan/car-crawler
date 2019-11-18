@@ -21,19 +21,19 @@ public class SaveUsualCarsController {
     private String testUrl;
     private WebDriver driver;
 
-    private PowerRepository powerRepository;
-    private EngineSizeRepository engineSizeRepository;
-    private ModelRepository modelRepository;
-    private ManufacturerRepository manufacturerRepository;
-    private FuelTypeRepository fuelTypeRepository;
+    private UsualPowerRepository usualPowerRepository;
+    private UsualEngineSizeRepository usualEngineSizeRepository;
+    private UsualModelRepository usualModelRepository;
+    private UsualManufacturerRepository usualManufacturerRepository;
+    private UsualFuelTypeRepository usualFuelTypeRepository;
 
     @Autowired
-    public SaveUsualCarsController(PowerRepository powerRepository, EngineSizeRepository engineSizeRepository, ModelRepository modelRepository, ManufacturerRepository manufacturerRepository, FuelTypeRepository fuelTypeRepository) {
-        this.powerRepository = powerRepository;
-        this.engineSizeRepository = engineSizeRepository;
-        this.modelRepository = modelRepository;
-        this.manufacturerRepository = manufacturerRepository;
-        this.fuelTypeRepository = fuelTypeRepository;
+    public SaveUsualCarsController(UsualPowerRepository usualPowerRepository, UsualEngineSizeRepository usualEngineSizeRepository, UsualModelRepository usualModelRepository, UsualManufacturerRepository usualManufacturerRepository, UsualFuelTypeRepository usualFuelTypeRepository) {
+        this.usualPowerRepository = usualPowerRepository;
+        this.usualEngineSizeRepository = usualEngineSizeRepository;
+        this.usualModelRepository = usualModelRepository;
+        this.usualManufacturerRepository = usualManufacturerRepository;
+        this.usualFuelTypeRepository = usualFuelTypeRepository;
     }
 
     public void prepare() {
@@ -41,10 +41,10 @@ public class SaveUsualCarsController {
                 "webdriver.chrome.driver",
                 "webdriver/chromedriver.exe");
 
-        testUrl = "https://www.epiesa.ro//";
+        testUrl = "https://www.epiesa.ro/";
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
+        //options.addArguments("headless");
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
@@ -52,95 +52,97 @@ public class SaveUsualCarsController {
         driver.get(testUrl);
     }
 
-    public void test() {
-        List<Manufacturer> manufacturerList = new ArrayList<>();
-        WebElement link = driver.findElement(By.linkText("find your car manually"));
-        link.click();
+    public boolean test(UsualManufacturer lastUsualManufacturer) {
+        List<UsualManufacturer> usualManufacturerList = new ArrayList<>();
         WebElement selectManufacturerElement = driver.findElement(By.name("select_marca"));
         Select selectManufacturer = new Select(selectManufacturerElement);
-        manufacturerList = selectManufacturer.getOptions()
+        usualManufacturerList = selectManufacturer.getOptions()
                 .stream()
-                .filter(manufacturer -> !manufacturer.getText().contains("MARCA"))
-                .map(manufacturer -> new Manufacturer(manufacturer.getText()))
+                .filter(manufacturer -> !manufacturer.getText().contains("MARCA")&& (lastUsualManufacturer == null || lastUsualManufacturer.getName().compareTo(manufacturer.getText()) < 0))
+                .map(manufacturer -> new UsualManufacturer(manufacturer.getText()))
                 .collect(Collectors.toList());
 
-        manufacturerList.forEach(manufacturer -> {
-            manufacturerRepository.save(manufacturer);
-            selectManufacturer.selectByVisibleText(manufacturer.getName());
+        usualManufacturerList.forEach(usualManufacturer -> {
+            usualManufacturerRepository.save(usualManufacturer);
+            selectManufacturer.selectByVisibleText(usualManufacturer.getName());
             WebElement selectModelElement = driver.findElement(By.name("select_model"));
             while (!selectModelElement.isEnabled()) ;
             Select selectModel = new Select(selectModelElement);
-            manufacturer.setModels(selectModel.getOptions()
+            usualManufacturer.setUsualModels(selectModel.getOptions()
                     .stream()
                     .filter(model -> !model.getText().contains("MODEL"))
-                    .map(model -> new Model(model.getText()))
+                    .map(model -> new UsualModel(model.getText()))
                     .collect(Collectors.toList()));
-            manufacturer.getModels().forEach(model -> {
-                model.setManufacturer(manufacturer);
-                modelRepository.save(model);
-                selectModel.selectByVisibleText(model.getName());
+            usualManufacturer.getUsualModels().forEach(usualModel -> {
+                usualModel.setUsualManufacturer(usualManufacturer);
+                usualModelRepository.save(usualModel);
+                selectModel.selectByVisibleText(usualModel.getName());
                 WebElement selectCarburantElement = driver.findElement(By.name("select_carburant"));
                 while (!selectCarburantElement.isEnabled()) ;
                 Select selectVariant = new Select(selectCarburantElement);
-                model.setFuelTypes(selectVariant.getOptions()
+                usualModel.setUsualFuelTypes(selectVariant.getOptions()
                 .stream()
                 .filter(carburant -> !carburant.getText().contains("CARBURANT"))
-                .map(carburant -> new FuelType(carburant.getText()))
+                .map(carburant -> new UsualFuelType(carburant.getText()))
                 .collect(Collectors.toList()));
 
-                model.getFuelTypes().forEach(fuelType -> {
-                    fuelType.setModel(model);
-                    fuelTypeRepository.save(fuelType);
-                    selectVariant.selectByVisibleText(fuelType.getName());
+                usualModel.getUsualFuelTypes().forEach(usualFuelType -> {
+                    usualFuelType.setUsualModel(usualModel);
+                    usualFuelTypeRepository.save(usualFuelType);
+                    selectVariant.selectByVisibleText(usualFuelType.getName());
                     WebElement selectEngineElement = driver.findElement(By.name("select_cilindree"));
                     while (!selectEngineElement.isEnabled()) ;
                     Select selectEngine = new Select(selectEngineElement);
 
-                    fuelType.setEngineSizes(selectEngine.getOptions()
+                    usualFuelType.setUsualEngineSizes(selectEngine.getOptions()
                             .stream()
                             .filter(engineSize -> !engineSize.getText().contains("CILINDREE"))
-                            .map(engineSize -> new EngineSize(engineSize.getText()))
+                            .map(engineSize -> new UsualEngineSize(engineSize.getText()))
                             .collect(Collectors.toList()));
 
-                    fuelType.getEngineSizes().forEach(engineSize -> {
-                        engineSize.setFuelType(fuelType);
-                        engineSizeRepository.save(engineSize);
-                        selectEngine.selectByVisibleText(engineSize.getName());
+                    usualFuelType.getUsualEngineSizes().forEach(usualEngineSize -> {
+                        usualEngineSize.setUsualFuelType(usualFuelType);
+                        usualEngineSizeRepository.save(usualEngineSize);
+                        selectEngine.selectByVisibleText(usualEngineSize.getName());
                         WebElement selectYearElement;
                         selectYearElement = driver.findElement(By.name("select_motorizari"));
                         while (!selectYearElement.isEnabled()) ;
 
                         Select selectYear = new Select(selectYearElement);
 
-                        engineSize.setPowers(selectYear.getOptions()
+                        usualEngineSize.setUsualPowers(selectYear.getOptions()
                                 .stream()
                                 .filter(year -> !year.getText().contains("PUTERE"))
                                 .map(power -> {
-                                    Power power1 = new Power(power.getText());
-                                    power1.setEngineSize(engineSize);
-                                    powerRepository.save(power1);
-                                    return  power1;
+                                    UsualPower usualPower1 = new UsualPower(power.getText());
+                                    usualPower1.setUsualEngineSize(usualEngineSize);
+                                    usualPowerRepository.save(usualPower1);
+                                    return usualPower1;
                                 })
                                 .collect(Collectors.toList()));
 
-                        //engineSizeRepository.save(engineSize);
+                        //engineSizeRepository.save(usualEngineSize);
                 });
 
 
 
                 });
-                //modelRepository.save(model);
+                //modelRepository.save(usualModel);
             });
-            manufacturerRepository.save(manufacturer);
-            System.out.println(manufacturer);
+            usualManufacturerRepository.save(usualManufacturer);
+            System.out.println(usualManufacturer);
         });
 
         System.out.println("End");
 
+        return true;
     }
 
     public void teardown() {
         driver.quit();
     }
 
+    public List<UsualManufacturer> getAllManufacturers() {
+        return usualManufacturerRepository.findAll();
+    }
 }

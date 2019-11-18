@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Car_usual_powers")
-public class Power {
+public class UsualPower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -13,12 +13,12 @@ public class Power {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "engine_size_id")
-    private EngineSize engineSize;
+    private UsualEngineSize usualEngineSize;
 
-    public Power() {
+    public UsualPower() {
     }
 
-    public Power(String name) {
+    public UsualPower(String name) {
         this.name = name;
     }
 
@@ -30,12 +30,12 @@ public class Power {
         this.name = name;
     }
 
-    public EngineSize getEngineSize() {
-        return engineSize;
+    public UsualEngineSize getUsualEngineSize() {
+        return usualEngineSize;
     }
 
-    public void setEngineSize(EngineSize engineSize) {
-        this.engineSize = engineSize;
+    public void setUsualEngineSize(UsualEngineSize usualEngineSize) {
+        this.usualEngineSize = usualEngineSize;
     }
 
     @Override

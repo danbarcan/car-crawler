@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Car_usual_engine_sizes")
-public class EngineSize {
+public class UsualEngineSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -14,16 +14,16 @@ public class EngineSize {
     private String name;
 
     @OneToMany(
-            mappedBy = "engineSize",
+            mappedBy = "usualEngineSize",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<Power> powers;
+    private List<UsualPower> usualPowers;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fuel_type_id")
-    private FuelType fuelType;
+    private UsualFuelType usualFuelType;
 
     public long getId() {
         return id;
@@ -33,7 +33,7 @@ public class EngineSize {
         this.id = id;
     }
 
-    public EngineSize(String name) {
+    public UsualEngineSize(String name) {
         this.name = name;
     }
 
@@ -45,34 +45,34 @@ public class EngineSize {
         this.name = name;
     }
 
-    public List<Power> getPowers() {
-        return powers;
+    public List<UsualPower> getUsualPowers() {
+        return usualPowers;
     }
 
-    public void setPowers(List<Power> powers) {
-        this.powers = powers;
+    public void setUsualPowers(List<UsualPower> usualPowers) {
+        this.usualPowers = usualPowers;
     }
 
     public void addYear(String power) {
-        if (this.powers == null) {
-            this.powers = new ArrayList<>();
+        if (this.usualPowers == null) {
+            this.usualPowers = new ArrayList<>();
         }
-        this.powers.add(new Power(power));
+        this.usualPowers.add(new UsualPower(power));
     }
 
-    public FuelType getFuelType() {
-        return fuelType;
+    public UsualFuelType getUsualFuelType() {
+        return usualFuelType;
     }
 
-    public void setFuelType(FuelType fuelType) {
-        this.fuelType = fuelType;
+    public void setUsualFuelType(UsualFuelType usualFuelType) {
+        this.usualFuelType = usualFuelType;
     }
 
     @Override
     public String toString() {
-        return "\n\t\tEngineSize{" +
+        return "\n\t\tUsualEngineSize{" +
                 "name='" + name + '\'' +
-                ", powers=" + powers +
+                ", usualPowers=" + usualPowers +
                 '}';
     }
 }

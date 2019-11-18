@@ -53,7 +53,7 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
+        return "UsualManufacturer{" +
                 "name='" + name + '\'' +
                 ", models=" + models +
                 '}';

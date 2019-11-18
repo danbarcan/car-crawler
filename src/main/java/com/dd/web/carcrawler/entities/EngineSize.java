@@ -73,7 +73,7 @@ public class EngineSize {
 
     @Override
     public String toString() {
-        return "\n\t\tEngineSize{" +
+        return "\n\t\tUsualEngineSize{" +
                 "name='" + name + '\'' +
                 ", years=" + years +
                 '}';
